@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum UserRole {
+  CUSTOMER
+  CARRIER
+}
+
+enum RequestStatus {
+  OPEN
+  IN_PROGRESS
+  CLOSED
+}
+
+model User {
+  id             String          @id @default(cuid())
+  role           UserRole
+  name           String
+  email          String          @unique
+  passwordHash   String
+  createdAt      DateTime        @default(now())
+
+  carrierProfile CarrierProfile?
+  requests       Request[]       @relation("CustomerRequests")
+  offers         Offer[]         @relation("CarrierOffers")
+}
+
+model CarrierProfile {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  companyType   String?
+  companyName   String?
+  busModel      String?
+  seats         Int?
+  hasAc         Boolean  @default(false)
+  hasBelts      Boolean  @default(false)
+  hasLuggage    Boolean  @default(false)
+  busYear       Int?
+  paymentTypes  String?
+  comment       String?
+  createdAt     DateTime @default(now())
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Request {
+  id              String        @id @default(cuid())
+  customerId      String
+  fromCity        String
+  toCity          String
+  routePoints     Json?
+  returnToOrigin  Boolean       @default(true)
+  passengers      Int
+  hasChildren     Boolean       @default(false)
+  tripDate        DateTime
+  busType         String
+  paymentType     String
+  comment         String?
+  distanceKm      Float?
+  status          RequestStatus @default(OPEN)
+  createdAt       DateTime      @default(now())
+
+  customer        User          @relation("CustomerRequests", fields: [customerId], references: [id], onDelete: Cascade)
+  offers          Offer[]
+}
+
+model Offer {
+  id         String   @id @default(cuid())
+  requestId  String
+  carrierId  String
+  price      Float
+  comment    String?
+  selected   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  request    Request  @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  carrier    User     @relation("CarrierOffers", fields: [carrierId], references: [id], onDelete: Cascade)
+}
