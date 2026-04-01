@@ -52,6 +52,7 @@ export async function POST(req, { params }) {
         paymentType: body.paymentType,
         comment: body.comment || null,
         distanceKm: body.distanceKm ? Number(body.distanceKm) : null,
+        desiredPrice: body.desiredPrice ? Number(body.desiredPrice) : null,
       },
     });
 

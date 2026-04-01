@@ -243,6 +243,9 @@ export default function CarrierRequestsPage() {
                         </div>
                         <div className="mt-1 text-sm text-slate-700">
                           Оплата: {request.paymentType}
+			</div>
+			<div className="mt-1 text-sm text-slate-700">
+  			  Желаемая цена: {request.desiredPrice ? `${request.desiredPrice} ₽` : 'Не указана'}
                         </div>
                       </button>
                     ))}
@@ -267,7 +270,15 @@ export default function CarrierRequestsPage() {
                     <InfoRow label="Дата" value={new Date(selectedRequest.tripDate).toLocaleDateString()} />
                     <InfoRow label="Тип автобуса" value={selectedRequest.busType} />
                     <InfoRow label="Оплата" value={selectedRequest.paymentType} />
-                    <InfoRow label="Комментарий" value={selectedRequest.comment || 'Нет'} />
+                    <InfoRow
+  		      label="Желаемая цена"
+  		      value={
+    			selectedRequest.desiredPrice
+      			? `${selectedRequest.desiredPrice} ₽`
+      			: 'Не указана'
+  		      }
+		    />
+		    <InfoRow label="Комментарий" value={selectedRequest.comment || 'Нет'} />
                     <InfoRow
                       label="Возврат в город отправления"
                       value={selectedRequest.returnToOrigin ? 'Да' : 'Нет'}

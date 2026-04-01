@@ -64,6 +64,7 @@ model Request {
   paymentType     String
   comment         String?
   distanceKm      Float?
+  desiredPrice    Int?
   status          RequestStatus @default(OPEN)
   createdAt       DateTime      @default(now())
 

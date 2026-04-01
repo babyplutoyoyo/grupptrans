@@ -30,6 +30,7 @@ export default function DashboardPage() {
     comment: '',
     returnToOrigin: true,
     distanceKm: '',
+    desiredPrice: '',
   });
 
   const selectedRequest =
@@ -99,7 +100,6 @@ export default function DashboardPage() {
       setForm((prev) => ({ ...prev, tripDate: formatDateInput(value) }));
       return;
     }
-
     setForm((prev) => ({ ...prev, [field]: value }));
   }
 
@@ -168,6 +168,10 @@ export default function DashboardPage() {
         : dateError,
       busType: !form.busType.trim() ? 'Выбери тип автобуса' : '',
       paymentType: !form.paymentType.trim() ? 'Выбери тип оплаты' : '',
+      desiredPrice:
+        form.desiredPrice.trim() && !isPositiveInteger(form.desiredPrice)
+          ? 'Укажи число больше 0'
+          : '',
     }),
     [form, cityErrors, dateError]
   );
@@ -209,6 +213,7 @@ export default function DashboardPage() {
           tripDate: isoTripDate,
           routePoints: waypoints.filter((x) => x.trim()),
           distanceKm: form.distanceKm ? Number(form.distanceKm) : null,
+          desiredPrice: form.desiredPrice ? Number(form.desiredPrice) : null,
         }),
       });
 
@@ -232,6 +237,7 @@ export default function DashboardPage() {
         comment: '',
         returnToOrigin: true,
         distanceKm: '',
+        desiredPrice: '',
       });
       setWaypoints([]);
       setTouched(false);
@@ -524,13 +530,21 @@ export default function DashboardPage() {
                         error={touched ? requiredErrors.tripDate : ''}
                       />
                       <Field
-                        label="Комментарий"
-                        value={form.comment}
-                        onChange={(value) => updateForm('comment', value)}
-                        placeholder="Например: школьная экскурсия, нужен багажный отсек, остановка у музея"
-                        error=""
+                        label="Желаемая цена, ₽"
+                        value={form.desiredPrice}
+                        onChange={(value) => updateForm('desiredPrice', value)}
+                        placeholder="Например, 18000"
+                        error={touched ? requiredErrors.desiredPrice : ''}
                       />
                     </div>
+
+                    <Field
+                      label="Комментарий"
+                      value={form.comment}
+                      onChange={(value) => updateForm('comment', value)}
+                      placeholder="Например: школьная экскурсия, нужен багажный отсек, остановка у музея"
+                      error=""
+                    />
 
                     <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-4">
                       <div className="text-sm font-semibold text-emerald-800">
@@ -605,6 +619,10 @@ export default function DashboardPage() {
                             <div className="mt-1 text-sm text-slate-700">
                               Оплата: {request.paymentType}
                             </div>
+                            <div className="mt-1 text-sm text-slate-700">
+                              Желаемая цена:{' '}
+                              {request.desiredPrice ? `${request.desiredPrice} ₽` : 'Не указана'}
+                            </div>
                           </button>
                         ))}
                       </div>
@@ -650,6 +668,14 @@ export default function DashboardPage() {
                         <InfoRow
                           label="Оплата"
                           value={selectedRequest.paymentType}
+                        />
+                        <InfoRow
+                          label="Желаемая цена"
+                          value={
+                            selectedRequest.desiredPrice
+                              ? `${selectedRequest.desiredPrice} ₽`
+                              : 'Не указана'
+                          }
                         />
                         <InfoRow
                           label="Комментарий"
@@ -750,6 +776,14 @@ export default function DashboardPage() {
                         <InfoRow
                           label="Оплата"
                           value={selectedRequest.paymentType}
+                        />
+                        <InfoRow
+                          label="Желаемая цена"
+                          value={
+                            selectedRequest.desiredPrice
+                              ? `${selectedRequest.desiredPrice} ₽`
+                              : 'Не указана'
+                          }
                         />
                         <InfoRow
                           label="Комментарий"
