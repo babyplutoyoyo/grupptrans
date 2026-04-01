@@ -145,27 +145,6 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-
-              <div className="rounded-3xl border border-white/10 bg-white/10 p-5 backdrop-blur-sm">
-                <div className="text-sm font-medium text-white/70">
-                  Что уже есть в MVP
-                </div>
-
-                <div className="mt-4 grid gap-3 text-sm text-white/90">
-                  <div className="rounded-2xl bg-white/10 p-4">
-                    Регистрация и вход по ролям
-                  </div>
-                  <div className="rounded-2xl bg-white/10 p-4">
-                    Кабинет заказчика и кабинет перевозчика
-                  </div>
-                  <div className="rounded-2xl bg-white/10 p-4">
-                    Создание заявок и профиль транспорта
-                  </div>
-                  <div className="rounded-2xl bg-white/10 p-4">
-                    Дальше добавим отклики и выбор перевозчика
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
